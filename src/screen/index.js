@@ -1,0 +1,7 @@
+export * from './SplashScreen'
+export * from './Home'
+export * from './Search'
+export * from './Category'
+export * from './Profile'
+export * from './Login'
+export * from './DetailBook'
