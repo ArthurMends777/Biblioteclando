@@ -1,8 +1,10 @@
 export const colors = {
   white: '#FFFFFF',
-  light: '#E5E5E5',
-  dark: '#161616',
   black: '#000000',
   active: '#a8a8a8',
-  background: '#93CCB9',
+  background: '#C0EBDD',
+  bottomBar: '#54947F',
+  register: '#737373',
+  login: '#6DBDDF',
+  error: '#FF0000'
 }

@@ -28,7 +28,11 @@ export const ScreenScrollContainer = styled.ScrollView.attrs(
 export const Div = styled.View`
   display: flex;
   justify-content: space-between;
-  margin: 10px;
+  align-items: center;
+  margin: 8px;
+  border-radius: 3px;
+  background-color: #6DBDDF;
+  height: 215px;
 `
 
 export const DivBook = styled.View`

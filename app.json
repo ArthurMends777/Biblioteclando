@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "biblioteclando",
-    "slug": "biblioteclando",
+    "name": "Biblioteclando",
+    "slug": "Biblioteclando",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -20,17 +20,11 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.arthurmends.biblioteclando"
+        "backgroundColor": "#000000"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "0c8931cd-0361-4bba-a21f-24b1f7c1a97b"
-      }
     }
   }
 }

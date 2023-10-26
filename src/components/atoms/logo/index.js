@@ -1,16 +1,9 @@
-import React from 'react'
-import {LogoImageStyle} from './style'
-import logoImage from '../../../../assets/logo.png';
+import React from "react";
+import { LogoImageStyle } from "./style";
+import { Image } from '../../../../assets/logo.jpeg'
 
-const sizes = {
-  small: 28,
-  large: 100,
-}
-
-export const Logo = ({ source, size }) => {
-  return(
-    <LogoImageStyle source={logoImage} w={100} h={100}/>
-  )
-}
-
-
+export const Logo = ({source}) => {
+    return(
+      <LogoImageStyle source={Image} w={100} h={100}/>
+    )
+  }

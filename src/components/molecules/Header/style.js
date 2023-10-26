@@ -8,4 +8,5 @@ export const HeaderContainer = styled.View`
   width: 100%;
   background-color: #54947F;
   height: ${({ theme }) => theme.metrics.px(120)}px;
+  margin-bottom: ${({ theme, mb }) => theme.metrics.px(mb || 0)}px;
 `

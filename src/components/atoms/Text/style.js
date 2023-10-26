@@ -9,3 +9,4 @@ export const CustomText = styled.Text`
   margin-left: ${({ theme, ml }) => theme.metrics.px(ml || 0)}px;
   margin-right: ${({ theme, mr }) => theme.metrics.px(mr || 0)}px;
 `
+ 
