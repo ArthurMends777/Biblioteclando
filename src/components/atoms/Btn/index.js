@@ -70,3 +70,13 @@ export const BtnSearch = styled.TouchableOpacity`
     margin-top: ${({ theme, mt }) => theme.metrics.px(mt || 0)}px;
     margin-bottom: ${({ theme, mb }) => theme.metrics.px(mb || 0)}px;
 `
+
+export const BtnLogout = styled.TouchableOpacity`
+    background-color: #FF0000 ;
+    border-radius: 5px;
+    width: 120px;
+    height: 50px;
+    padding: 8px;
+    justify-content: center;
+    align-items: center;
+`

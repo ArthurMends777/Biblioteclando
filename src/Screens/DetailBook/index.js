@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Header, Container, Text, DivBook, BtnReserv, BtnFavorites } from '../../Components';
 import { Image } from 'react-native';
 import { useGetData } from "../../Services/hooks/useGetData";
-import { getFavorites, toggleFavorite } from "../../Services/hooks/favorite";
+import { getFavoriteBooks, toggleFavorite } from "../../Services/hooks/favorite";
+import { useAuth } from "../../Contexts/auth";
 
 export const DetailBook = ({ route }) => {
   const { item } = route.params;
   const { getAutor } = useGetData();
+  const { userToken } = useAuth();
   const [resultAutor, setResultAutor] = useState([]);
-  const [isFavorito, setIsFavorito] = useState(false); 
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     callGetAutorResult();
@@ -23,19 +25,24 @@ export const DetailBook = ({ route }) => {
   };
 
   const checkIfFavorito = async () => {
-    const favoritos = await getFavorites();
-    const livroEncontrado = favoritos.find((livro) => livro.id === item.id);
-    setIsFavorito(!!livroEncontrado);
+    const favoritos = await getFavoriteBooks(userToken);
+    const livroEncontrado = favoritos.find((book) => book.id === item.id);
+    setIsFavorite(!!livroEncontrado);
   };
 
   const toggleFavorito = async () => {
-    if (isFavorito) {
-      await toggleFavorite(item); // Remover dos favoritos
+    if (isFavorite) {
+      // Se o livro estiver nos favoritos, remova-o
+      await toggleFavorite(userToken, item);
     } else {
-      await toggleFavorite(item); // Adicionar aos favoritos
+      // Caso contrário, adicione-o
+      await toggleFavorite(userToken, item);
     }
-    checkIfFavorito(); // Atualize o estado isFavorito após a ação
+    // Atualize o estado para refletir a ação do usuário
+    checkIfFavorito();
   };
+
+
   return (
     <Container bg="background">
       <Header> {item.título} </Header>
@@ -48,7 +55,7 @@ export const DetailBook = ({ route }) => {
           <Text size={17}> Páginas: {item.Número_de_páginas} </Text>
           <BtnFavorites onPress={toggleFavorito}>
             <Text size={17}>
-              {isFavorito ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+              {isFavorite ? 'Remover dos Favoritos' : 'Adicionar aos Favoritos'}
             </Text>
           </BtnFavorites>
           <BtnReserv>
@@ -56,8 +63,8 @@ export const DetailBook = ({ route }) => {
           </BtnReserv>
         </DivBook>
       </DivBook>
-      <Text weight="bold"> Descrição do livro: </Text>
-      <Text size={18}>{item.descrição}</Text>
+      <Text weight="bold" ml={8}> Descrição do livro: </Text>
+      <Text size={18} ml={13}>{item.descrição}</Text>
     </Container>
   );
 };

@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { Container, Text, InputLogin, BtnRegister, BtnLogin } from '../../Components';
 import { Image, ActivityIndicator  } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useGetData } from '../../Services/hooks/useGetData';
+import { AuthContext } from '../../Contexts/auth';
 
 export const LoginScreen = () => {
     const navigation = useNavigation();
-    const { login } = useGetData();
+    const { login, error401 } = useContext(AuthContext);
 
     const [ senha, setSenha] = useState('');
     const [ email, setEmail] = useState('');
@@ -17,12 +17,12 @@ export const LoginScreen = () => {
     const handleLogin = async () => {
         try {
             setLoading(true);
-            const response = await login(email, senha); 
+            await login(email, senha); 
 
-            if (response.success) {
+            if (!error401) {
                 navigation.navigate('Home');
             } else {
-                setError('Credenciais incorretas.');
+                setError('Credenciais inválidas');
             }
         } catch (error) {
             console.error('Erro ao fazer login:', error);

@@ -4,6 +4,7 @@ import { FlatList } from 'react-native'
 import { useGetData } from '../../Services/hooks/useGetData'
 import { useNavigation } from '@react-navigation/native'
 
+
 export const HomeScreen = () => {
   const { getNomeGenero } = useGetData();
   const navigation = useNavigation();
