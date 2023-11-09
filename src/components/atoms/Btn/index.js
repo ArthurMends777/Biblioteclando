@@ -7,6 +7,16 @@ export const BtnRegister = styled.TouchableOpacity`
     margin-left: ${({ theme, ml }) => theme.metrics.px(ml || 25)}px;
 `
 
+export const BtnGetRegister = styled.TouchableOpacity`
+    border-radius: 10px;
+    margin-top: ${({ theme, mt }) => theme.metrics.px(mt || 0)}px;
+    margin-bottom: ${({ theme, mb }) => theme.metrics.px(mb || 0)}px;
+    margin-left: ${({ theme, ml }) => theme.metrics.px(ml || 25)}px;
+    padding: 10px;
+    background-color: ${({ bg, theme }) => theme.colors[bg || 'bottomBar']};
+`
+// bottomBar
+
 export const BtnLogin = styled.TouchableOpacity`
     background-color: #6DBDDF;
     border-radius: 20px;

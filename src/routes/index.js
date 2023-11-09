@@ -3,7 +3,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { NavigationContainer } from "@react-navigation/native"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { LoginScreen , HomeScreen, ProfileScreen, SearchScreen, Category, DetailBook, FavoriteBooks } from "../Screens/"
+import { LoginScreen , HomeScreen, ProfileScreen, SearchScreen, Category, DetailBook, FavoriteBooks, LoanBook, RegisterScreen } from "../Screens/"
 import { theme } from "../styles/theme"
 import { Text } from "../Components"
 import { useAuth } from "../Contexts/auth"
@@ -17,15 +17,16 @@ const HomeStack = () => (
     <Stack.Screen name="Category" component={Category} options={{ headerShown: false }} />
     <Stack.Screen name="Details" component={DetailBook} options={{ headerShown: false }} />
     <Stack.Screen name="Favorite" component={FavoriteBooks} options={{ headerShown: false }} />
+    <Stack.Screen name="Loan" component={LoanBook} options={{ headerShown: false }}/>
   </Stack.Navigator>
 );
 
-export const Routes = () => {
-  const { userToken } = useAuth();
+const Routes = () => {
+  const { infoUser } = useAuth();
 
   return (
     <NavigationContainer>
-      {userToken ? (
+      {infoUser ? (
         <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
@@ -34,7 +35,7 @@ export const Routes = () => {
               )
             },
             tabBarLabel: ({ focused, color }) => {
-              return <Text size={12} mb={10} color='white'>{getRouteLabel(route.name)}</Text>
+              return <Text size={12} mb={10} color="white">{getRouteLabel(route.name)}</Text>
             },
             tabBarActiveTintColor: theme.colors.white,
             tabBarInactiveTintColor: theme.colors.active,
@@ -52,6 +53,7 @@ export const Routes = () => {
       ) : (
         <Stack.Navigator>
           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       )}
     </NavigationContainer>
@@ -77,3 +79,5 @@ const getRouteLabel = (routeName) => {
 
   return routeLabels[routeName];
 };
+
+export default Routes;

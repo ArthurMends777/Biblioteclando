@@ -8,7 +8,7 @@ import { useAuth } from "../../Contexts/auth";
 export const DetailBook = ({ route }) => {
   const { item } = route.params;
   const { getAutor } = useGetData();
-  const { userToken } = useAuth();
+  const { infoUser } = useAuth();
   const [resultAutor, setResultAutor] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -25,18 +25,20 @@ export const DetailBook = ({ route }) => {
   };
 
   const checkIfFavorito = async () => {
-    const favoritos = await getFavoriteBooks(userToken);
-    const livroEncontrado = favoritos.find((book) => book.id === item.id);
-    setIsFavorite(!!livroEncontrado);
+    if (infoUser) {
+      const favoritos = await getFavoriteBooks(infoUser.id_leitor); // Use o ID do leitor para verificar favoritos
+      const livroEncontrado = favoritos.find((book) => book.id === item.id);
+      setIsFavorite(!!livroEncontrado);
+    }
   };
 
   const toggleFavorito = async () => {
     if (isFavorite) {
       // Se o livro estiver nos favoritos, remova-o
-      await toggleFavorite(userToken, item);
+      await toggleFavorite(infoUser.id_leitor, item); // Use o ID do leitor para manipular favoritos
     } else {
       // Caso contrário, adicione-o
-      await toggleFavorite(userToken, item);
+      await toggleFavorite(infoUser.id_leitor, item); // Use o ID do leitor para manipular favoritos
     }
     // Atualize o estado para refletir a ação do usuário
     checkIfFavorito();

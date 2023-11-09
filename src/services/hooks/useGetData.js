@@ -1,6 +1,7 @@
 import { api } from "../api";
 
-export const useGetData = () => { 
+export const useGetData = () => {
+    /*
     const login = async (email, senha) => {
         try {
             const response = await api.post('/api/login', { email, senha });
@@ -18,7 +19,7 @@ export const useGetData = () => {
         console.error('Erro ao fazer login:', error);
         return { success: false, error: 'Algo deu errado. Tente novamente mais tarde.' };
         }
-    };
+    };*/
 
     const getNomeGenero = async () => {
         try {
@@ -84,12 +85,48 @@ export const useGetData = () => {
           return [];
         }
     };
+
+    const fazerEmprestimo = async (idLeitor, idLivro) => {
+        try {
+          const response = await api.post('/api/emprestimo', { idLeitor, idLivro });
+          if (response.status === 201) {
+            return { success: true };
+          } else if (response.status === 400) {
+            return { success: false, error: 'Livro já emprestado' };
+          } else {
+            return { success: false, error: 'Erro interno do servidor' };
+          }
+        } catch (error) {
+          console.error('Erro ao fazer empréstimo:', error);
+          return { success: false, error: 'Algo deu errado. Tente novamente mais tarde.' };
+        }
+    };
+
+    const register = async (userData) => {
+        try {
+          const response = await api.post('/api/usuarios', userData);
+          
+          if (response.status === 201) {
+            return { success: true, message: 'Usuário cadastrado com sucesso' };
+          } else if (response.status === 500) { 
+            return { success: false, error: 'Erro do servidor' };
+          } else {
+            return { success: false, error: 'Resposta inesperada do servidor' };
+          }
+        } catch (error) {
+          console.log('Erro ao cadastrar', error);
+          return { success: false, error: 'Algo deu errado, tente novamente' };
+        }
+      };
+      
+      
     
     return {
-        login,
         getNomeGenero,
         getBooksCategory,
         getAutor,
         searchBooks,
+        fazerEmprestimo,
+        register,
     };
 }

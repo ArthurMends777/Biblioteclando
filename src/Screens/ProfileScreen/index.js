@@ -8,7 +8,7 @@ export const ProfileScreen = () => {
     const navigation = useNavigation();
     const { infoUser, logout } = useAuth();
 
-    console.log(infoUser)
+    //console.log(" Informações do user: " , infoUser)
     const handleLogout = () => {
         logout(); 
         navigation.navigate('Login');
@@ -16,23 +16,23 @@ export const ProfileScreen = () => {
     return(
         <Container bg="background" align="center">
             <Header> PERFIL </Header>
-            <DivProfile dir="row" align="center" justify="center" h={150}>
-                <Image 
-                    source={require('../../../assets/logo.jpeg')}
-                    style={{ width: 150, height: 140, borderRadius: 20 }}
-                />
-                <Text ml={20}> Meu perfil </Text>
+            <DivProfile dir="row" align="center" justify="center" h={120}>
+                <Text ml={20}> Nome: {infoUser.nome} </Text>
             </DivProfile>
             <DivProfile h={250}>
+
                 <BtnProfile onPress={() => navigation.navigate('Favorite')}>
                     <Text ml={20}> Meus favoritos</Text>
                 </BtnProfile>
+
                 <BtnProfile>
                     <Text ml={20}> Livros em leitura</Text>
                 </BtnProfile>
-                <BtnProfile>
+
+                <BtnProfile onPress={() => navigation.navigate('Loan')}>
                     <Text ml={20}> Pegar um livro emprestado</Text>
                 </BtnProfile>
+
                 <BtnProfile>
                     <Text ml={20}> Histórico de leitura</Text>
                 </BtnProfile>

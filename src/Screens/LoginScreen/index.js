@@ -54,7 +54,7 @@ export const LoginScreen = () => {
                     secureTextEntry={true}
                 />
 
-                <BtnRegister>
+                <BtnRegister onPress={() => navigation.navigate('Register')}>
                     <Text size={18} color='register'> Registre-se </Text>
                 </BtnRegister>
             </Container>  

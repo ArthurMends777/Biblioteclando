@@ -6,7 +6,7 @@ import { getFavoriteBooks } from "../../Services/hooks/favorite";
 import { useAuth } from "../../Contexts/auth";
 export const FavoriteBooks = () => {
   const navigation = useNavigation();
-  const { userToken } = useAuth();
+  const { infoUser } = useAuth();
   const [favoriteBooks, setFavoriteBooks] = useState([]);
   const [isListEmpty, setIsListEmpty] = useState(false);
 
@@ -15,9 +15,12 @@ export const FavoriteBooks = () => {
   }, []);
 
   const getFavoriteBooksList = async () => {
-    const books = await getFavoriteBooks(userToken);
-    setFavoriteBooks(books);
-    setIsListEmpty(books.length === 0); 
+    if (infoUser) {
+      const leitorId = infoUser.id_leitor; // Obtém o ID do leitor a partir das informações do usuário
+      const books = await getFavoriteBooks(leitorId); // Use o ID do leitor para buscar livros favoritos
+      setFavoriteBooks(books);
+      setIsListEmpty(books.length === 0);
+    }
   };
 
   return (
