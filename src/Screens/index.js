@@ -5,5 +5,5 @@ export * from './SearchScreen';
 export * from './CategoryScreen';
 export * from './DetailBook';
 export * from './FavoriteScreen';
-export * from './LoanBook';
 export * from './RegisterScreen';
+export * from './HistoryScreen';

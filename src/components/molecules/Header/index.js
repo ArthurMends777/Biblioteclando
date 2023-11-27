@@ -7,13 +7,11 @@ import { Image, TouchableOpacity } from 'react-native'
 export const Header = ({children, ...props}) => {
     const navigation = useNavigation()
 
-    const handleHome = () => {
-        navigation.navigate('Home');
-    };
+  
 
     return (
         <HeaderContainer {...props}>
-            <TouchableOpacity onPress={handleHome}>
+            <TouchableOpacity>
                 <Image 
                     source={require('../../../../assets/logo.jpeg')}
                     style={{ width: 120, height: 130}}

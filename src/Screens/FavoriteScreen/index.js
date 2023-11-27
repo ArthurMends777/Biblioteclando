@@ -36,6 +36,7 @@ export const FavoriteBooks = () => {
         ) : (
           <FlatList
             data={favoriteBooks}
+            numColumns={3}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
               <Div>

@@ -6,22 +6,26 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [infoUser, setInfoUser] = useState()
-  const [error401, setError401] = useState(false);
-
+  const [error401, setError401] = useState();
+  
   useEffect(() => {
     checkUser();
   }, []);
-
+  
   const login = async (email, senha) => {
     try {
+  
       const response = await api.post('/api/login', { email, senha });
-      //console.log(response.data.userData)
+  
       if (response.status === 200) {
+        console.log('Login bem-sucedido. Atualizando informações do usuário...');
+  
         const userData = response.data.userData;
         const userIdString = JSON.stringify(userData.id_leitor);
-
+  
         await AsyncStorage.setItem('userID', userIdString);
-        setInfoUser(userData);
+        await setInfoUser(userData);
+  
       } else if (response.status === 401) {
         setError401(true);
       } else {
@@ -29,10 +33,12 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error('Erro ao fazer login:', error);
-      setError401(false);
+      setError401(false); // Considerar se deve ser definido como true ou não em casos de erro
+    } finally {
+      console.log('Finalizando o login...');
     }
   };
-
+  
   const logout = async () => {
     setInfoUser();
     await AsyncStorage.removeItem('userID');
@@ -54,7 +60,6 @@ export const AuthProvider = ({ children }) => {
       }
     }
   };
-
   return (
     <AuthContext.Provider value={{ login, logout, error401, infoUser }}>
       {children}

@@ -39,11 +39,12 @@ export const BtnCategory = styled.TouchableOpacity`
 export const BtnProfile = styled.TouchableOpacity`
     display: flex;
     margin: 10px;
-    width: 90%;
+    width: 80%;
     height: 50px;
     border-radius: 8px;
     background-color: #8CB1FF;
     justify-content: ${({ justify }) => justify || 'center'};
+    align-items: center;
 `
 
 export const BtnBook = styled.TouchableOpacity`

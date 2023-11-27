@@ -1,26 +1,6 @@
 import { api } from "../api";
 
 export const useGetData = () => {
-    /*
-    const login = async (email, senha) => {
-        try {
-            const response = await api.post('/api/login', { email, senha });
-        if (response.status === 200) {
-            // Autenticação bem-sucedida
-            return { success: true };
-        } else if (response.status === 401) {
-            // Credenciais inválidas
-            return { success: false, error: 'Credenciais inválidas' };
-        } else {
-            // Outro erro
-            return { success: false, error: 'Erro interno do servidor' };
-        }
-        } catch (error) {
-        console.error('Erro ao fazer login:', error);
-        return { success: false, error: 'Algo deu errado. Tente novamente mais tarde.' };
-        }
-    };*/
-
     const getNomeGenero = async () => {
         try {
             const response = await api.get(`/api/categorias`);
@@ -68,56 +48,89 @@ export const useGetData = () => {
     };
 
     const searchBooks = async (searchText) => {
-        try {
-          const response = await api.get('/api/livros/busca/nome', {
-            params: {
-              searchText,
-            },
-          });
-      
-          if (response.status === 200) {
-            return response.data;
-          } else {
-            return [];
-          }
-        } catch (error) {
-          console.error('Erro ao buscar livros:', error);
+      try {
+        const response = await api.get('/api/livros/busca', {
+          params: {
+            nome: searchText,
+          },
+        });
+    
+        if (response.status === 200) {
+          return response.data;
+        } else {
           return [];
         }
+      } catch (error) {
+        console.error('Erro ao buscar livros:', error);
+        return [];
+      }
     };
-
-    const fazerEmprestimo = async (idLeitor, idLivro) => {
-        try {
-          const response = await api.post('/api/emprestimo', { idLeitor, idLivro });
-          if (response.status === 201) {
-            return { success: true };
-          } else if (response.status === 400) {
-            return { success: false, error: 'Livro já emprestado' };
-          } else {
-            return { success: false, error: 'Erro interno do servidor' };
-          }
-        } catch (error) {
-          console.error('Erro ao fazer empréstimo:', error);
-          return { success: false, error: 'Algo deu errado. Tente novamente mais tarde.' };
-        }
-    };
-
+    
     const register = async (userData) => {
-        try {
-          const response = await api.post('/api/usuarios', userData);
-          
-          if (response.status === 201) {
-            return { success: true, message: 'Usuário cadastrado com sucesso' };
-          } else if (response.status === 500) { 
-            return { success: false, error: 'Erro do servidor' };
-          } else {
-            return { success: false, error: 'Resposta inesperada do servidor' };
-          }
-        } catch (error) {
-          console.log('Erro ao cadastrar', error);
-          return { success: false, error: 'Algo deu errado, tente novamente' };
+      try {
+        const response = await api.post('/api/usuarios', userData);
+        
+        if (response.status === 201) {
+          return { success: true, message: 'Usuário cadastrado com sucesso' };
+        } else if (response.status === 500) { 
+          return { success: false, error: 'Erro do servidor' };
+        } else {
+          return { success: false, error: 'Resposta inesperada do servidor' };
         }
-      };
+      } catch (error) {
+        console.log('Erro ao cadastrar', error);
+        return { success: false, error: 'Algo deu errado, tente novamente' };
+      }
+    };
+
+    const fazerEmprestimo = async (idLeitor, idLivro, idFuncionario) => {
+      try {
+        const response = await api.post('/api/emprestimo', { idLeitor, idLivro, idFuncionario });
+        
+        if (response.status === 201) {
+          return { success: true };
+        } else if (response.status === 400) {
+          return { success: false, error: 'Livro já emprestado' };
+        } else {
+          return { success: false, error: 'Erro interno do servidor' };
+        }
+      } catch (error) {
+        console.error('Erro ao fazer empréstimo:', error);
+        return { success: false, error: 'Algo deu errado. Tente novamente mais tarde.' };
+      }
+    };
+
+    const getEmprestimosUsuario = async (idLeitor) => {
+      try {
+        const response = await api.get(`/api/emprestimos/${idLeitor}`);
+        if (response.status === 200) {
+          return response.data;
+        } else {
+          return [];
+        }
+      } catch (error) {
+        console.error('Erro ao buscar empréstimos do usuário:', error);
+        return [];
+      }
+    };
+
+    
+    const bookByEmprest = async (idLivro) => {
+      try {
+        const response = await api.get(`/api/livros/${idLivro}`);
+        console.log(response.data)
+
+        if (response.status == 200) {
+          return response.data;
+        } else {
+          return []
+        }
+      } catch (error) {
+        console.log('Erro ao buscar as informações do livro');
+        return { success: false, error: 'Algo deu errado, tente novamente' };
+      }
+    }
+
       
       
     
@@ -127,6 +140,8 @@ export const useGetData = () => {
         getAutor,
         searchBooks,
         fazerEmprestimo,
+        getEmprestimosUsuario,
         register,
+        bookByEmprest,
     };
 }

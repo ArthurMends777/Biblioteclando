@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Em getFavoriteBooks
 export const getFavoriteBooks = async (id_leitor) => {
   try {
     const favoriteBooksJSON = await AsyncStorage.getItem(`favoriteBooks_${id_leitor}`);
@@ -15,6 +16,7 @@ export const getFavoriteBooks = async (id_leitor) => {
 };
 
 
+
 export const toggleFavorite = async (id_leitor, livro) => {
   try {
     if (livro && livro.id_livro) {
@@ -25,12 +27,14 @@ export const toggleFavorite = async (id_leitor, livro) => {
         favoritosArray = JSON.parse(favoritos);
       }
 
-      const existingBook = favoritosArray.find((item) => item.id_livro === livro.id_livro);
+      const existingBookIndex = favoritosArray.findIndex((item) => item.id_livro === livro.id_livro);
 
-      if (existingBook) {
-        favoritosArray = favoritosArray.filter((item) => item.id_livro !== livro.id_livro);
+      if (existingBookIndex !== -1) {
+        // Remover o livro existente
+        favoritosArray = [...favoritosArray.slice(0, existingBookIndex), ...favoritosArray.slice(existingBookIndex + 1)];
       } else {
-        favoritosArray.push(livro);
+        // Adicionar o novo livro
+        favoritosArray = [...favoritosArray, livro];
       }
 
       // Atualize a lista de favoritos no AsyncStorage
@@ -42,4 +46,6 @@ export const toggleFavorite = async (id_leitor, livro) => {
     console.error('Erro ao adicionar/remover dos favoritos:', error);
   }
 };
+
+
 

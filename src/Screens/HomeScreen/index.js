@@ -25,12 +25,10 @@ export const HomeScreen = () => {
   };
 
   const renderItem = ({ item }) => (
-    <BtnCategory w={160} margin={3} onPress={() => handleCategoryPress(item)}>
+    <BtnCategory w={170} margin={5} onPress={() => handleCategoryPress(item)}>
       <Text size={20}>{item.nome_genero}</Text>
     </BtnCategory>
   );
-
-  const numberOfColumns = 2;
 
   return (
     <Container align="center" bg="background">
@@ -39,7 +37,7 @@ export const HomeScreen = () => {
       <FlatList
         data={categories}
         renderItem={renderItem}
-        numColumns={numberOfColumns}
+        numColumns={2}
         keyExtractor={(item, index) => index.toString()} 
       />
     </Container>

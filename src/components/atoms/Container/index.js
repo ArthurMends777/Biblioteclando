@@ -10,6 +10,20 @@ export const Container = styled.View`
   width: ${({ theme, w }) => (w ? `${theme.metrics.px(w)}px` : '100%')};
   height: ${({ theme, h }) => (h ? `${theme.metrics.px(h)}px` : '100%')};
   margin-top: ${({ theme, mt }) => theme.metrics.px(mt || 0)}px;
+  margin-bottom: ${({ theme, mb }) => theme.metrics.px(mb || 0)}px;
+`
+
+export const ContainerSafe = styled.SafeAreaView`
+  display: flex;
+  flex-direction: ${({ dir }) => dir || 'column'};
+  align-items: ${({ align }) => align || 'flex-start'};
+  justify-content: ${({ justify }) => justify || 'flex-start'};
+  background-color: ${({ bg, theme }) => theme.colors[bg || 'white']};
+  width: ${({ theme, w }) => (w ? `${theme.metrics.px(w)}px` : '100%')};
+  height: ${({ theme, h }) => (h ? `${theme.metrics.px(h)}px` : '100%')};
+  margin-top: ${({ theme, mt }) => theme.metrics.px(mt || 0)}px;
+  margin-bottom: ${({ theme, mb }) => theme.metrics.px(mb || 0)}px;
+  text-align: left;
 `
 
 export const ScreenScrollContainer = styled.ScrollView.attrs(
@@ -32,7 +46,8 @@ export const Div = styled.View`
   margin: 8px;
   border-radius: 3px;
   background-color: #6DBDDF;
-  height: 215px;
+  height: 225px;
+  width: 120px;
 `
 
 export const DivBook = styled.View`

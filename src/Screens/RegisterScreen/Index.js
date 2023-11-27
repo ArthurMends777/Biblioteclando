@@ -1,9 +1,13 @@
 import React, { useState } from "react";
-import { Container, Text, InputRegister, BtnGetRegister } from '../../Components';
+import { ScreenScrollContainer, Text, InputRegister, BtnGetRegister, ContainerSafe } from '../../Components';
 import { useGetData } from "../../Services/hooks/useGetData";
+import { ActivityIndicator } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
 
 export const RegisterScreen = () => {
+  const navigation = useNavigation();
   const { register } = useGetData();
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     nome: "",
@@ -14,73 +18,131 @@ export const RegisterScreen = () => {
     CPF: ""
   });
 
+  const [confirmSenha, setConfirmSenha] = useState("");
   const [registrationStatus, setRegistrationStatus] = useState(null);
+  const [error, setError] = useState("");
 
   const handleChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleConfirmSenhaChange = (text) => {
+    setConfirmSenha(text);
+  };
+
   const handleSubmit = async () => {
-    const response = await register(formData);
-    setRegistrationStatus(response);
+    try {
+      setLoading(true);
+      // Verifica se algum campo está vazio
+      if (Object.values(formData).some(value => value.trim() === '')) {
+        setError('Preencha todos os campos.');
+        return;
+      }
+
+      // Verifica se as senhas coincidem
+      if (formData.senha !== confirmSenha) {
+        setError('As senhas não coincidem.');
+        return;
+      } else {
+        setError('')
+      }
+
+      const response = await register(formData);
+      navigation.navigate('Home');
+      setRegistrationStatus(response);
+    } catch (error) {
+      setError('Erro ao cadastrar. Tente novamente mais tarde.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <Container bg="background" align="center" justify="center">
-      <InputRegister
-        type="text"
-        name="nome"
-        value={formData.nome}
-        placeholder="Nome"
-        onChangeText={(text) => handleChange("nome", text)}
-      />
-      <InputRegister
-        type="text"
-        name="Endereço"
-        value={formData.Endereço}
-        placeholder="Endereço"
-        onChangeText={(text) => handleChange("Endereço", text)}
-      />
-      <InputRegister
-        type="password"
-        name="senha"
-        value={formData.senha}
-        placeholder="Senha"
-        onChangeText={(text) => handleChange("senha", text)}
-      />
-      <InputRegister
-        type="text"
-        name="telefone"
-        value={formData.telefone}
-        placeholder="Telefone"
-        onChangeText={(text) => handleChange("telefone", text)}
-      />
-      <InputRegister
-        type="email"
-        name="email"
-        value={formData.email}
-        placeholder="Email"
-        onChangeText={(text) => handleChange("email", text)}
-      />
-      <InputRegister
-        type="text"
-        name="CPF"
-        value={formData.CPF}
-        placeholder="CPF"
-        onChangeText={(text) => handleChange("CPF", text)}
-      />
+    <ScreenScrollContainer bg="background" align="center" justify="center">
+      <ContainerSafe h={740} bg="background" align="center"  mt={80}>
+        <Text ml={-230} size={20}> Nome: </Text>
+        <InputRegister
+          type="text"
+          name="nome"
+          value={formData.nome}
+          placeholder="Nome"
+          onChangeText={(text) => handleChange("nome", text)}
+        />
+        <Text ml={-220} size={20}> Endereço: </Text>
+        <InputRegister
+          type="text"
+          name="Endereço"
+          value={formData.Endereço}
+          placeholder="Ex: Rua das flores, Bairro: jardim"
+          onChangeText={(text) => handleChange("Endereço", text)}
+        />
+        <Text ml={-240} size={20}> Senha: </Text>
+        <InputRegister
+          type="password"
+          name="senha"
+          value={formData.senha}
+          placeholder="Senha"
+          onChangeText={(text) => handleChange("senha", text)}
+          secureTextEntry
+        />
+        <Text ml={-150} size={20}> Confirme a senha: </Text>
+        <InputRegister
+          type="password"
+          name="confirmSenha"
+          value={confirmSenha}
+          placeholder="Digite sua senha novamente"
+          onChangeText={handleConfirmSenhaChange}
+          secureTextEntry
+        />
+        <Text ml={-220} size={20}> Telefone: </Text>
+        <InputRegister
+          type="text"
+          name="telefone"
+          value={formData.telefone}
+          placeholder="Ex: (**) *****-****"
+          onChangeText={(text) => handleChange("telefone", text)}
+        />
+        <Text ml={-235} size={20}> E-mail: </Text>
+        <InputRegister
+          type="email"
+          name="email"
+          value={formData.email}
+          placeholder="seuemail@email.com"
+          onChangeText={(text) => handleChange("email", text)}
+        />
+        <Text ml={-250} size={20}> CPF: </Text>
+        <InputRegister
+          type="text"
+          name="CPF"
+          value={formData.CPF}
+          placeholder="111.111.111-11"
+          onChangeText={(text) => handleChange("CPF", text)}
+        />
+        
         <BtnGetRegister onPress={handleSubmit}>
-          <Text color="white">
-            Cadastrar
-          </Text>  
+          {loading ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <Text color="white">
+              Cadastrar
+            </Text>
+          )}
         </BtnGetRegister>
-      {registrationStatus && (
-        <Text>
-          {registrationStatus.success
-            ? "Usuário cadastrado com sucesso"
-            : "Erro ao cadastrar"}
-        </Text>
-      )}
-    </Container>
+
+        
+        {error && (
+          <Text color="error">
+            {error}
+          </Text>
+        )}
+        {registrationStatus && (
+          <Text color="error" size={15} mt={10}>
+            {registrationStatus.success
+              ? "Usuário cadastrado com sucesso"
+              : "Erro ao cadastrar, Tente novamente mais tarde"}
+          </Text>
+        )}
+      </ContainerSafe>
+    </ScreenScrollContainer>
   );
 };

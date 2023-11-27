@@ -3,7 +3,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { NavigationContainer } from "@react-navigation/native"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { LoginScreen , HomeScreen, ProfileScreen, SearchScreen, Category, DetailBook, FavoriteBooks, LoanBook, RegisterScreen } from "../Screens/"
+import { LoginScreen , ProfileScreen, SearchScreen, Category, DetailBook, FavoriteBooks, RegisterScreen, HistoryScreen, HomeScreen } from "../Screens/"
 import { theme } from "../styles/theme"
 import { Text } from "../Components"
 import { useAuth } from "../Contexts/auth"
@@ -11,22 +11,8 @@ import { useAuth } from "../Contexts/auth"
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const HomeStack = () => (
-  <Stack.Navigator>
-    <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-    <Stack.Screen name="Category" component={Category} options={{ headerShown: false }} />
-    <Stack.Screen name="Details" component={DetailBook} options={{ headerShown: false }} />
-    <Stack.Screen name="Favorite" component={FavoriteBooks} options={{ headerShown: false }} />
-    <Stack.Screen name="Loan" component={LoanBook} options={{ headerShown: false }}/>
-  </Stack.Navigator>
-);
-
-const Routes = () => {
-  const { infoUser } = useAuth();
-
-  return (
-    <NavigationContainer>
-      {infoUser ? (
+const NavigattionTab = () => {
+  return(
         <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
@@ -46,14 +32,38 @@ const Routes = () => {
             },
           })}
         >
-          <Tab.Screen name="HomeTab" component={HomeStack} options={{ headerShown: false }}/>
+          <Tab.Screen name="HomeTab" component={HomeScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="ProfileTab" component={ProfileScreen} options={{ headerShown: false }}/>
           <Tab.Screen name="SearchTab" component={SearchScreen} options={{ headerShown: false }}/>
-        </Tab.Navigator>
+      </Tab.Navigator>
+  )
+}
+
+
+const Routes = () => {
+  const { infoUser } = useAuth();
+
+  return (
+    <NavigationContainer>
+      {infoUser ? (
+        <Stack.Navigator>
+          <Stack.Screen name="Home" component={NavigattionTab} options={{ headerShown: false }}/>
+          <Stack.Screen name="Category" component={Category} options={{ headerShown: false }} />
+          <Stack.Screen name="Details" component={DetailBook} options={{ headerShown: false }} />
+          <Stack.Screen name="Favorite" component={FavoriteBooks} options={{ headerShown: false }} />
+          <Stack.Screen name="History" component={HistoryScreen} options={{ headerShown: false }}/>
+          <Stack.Screen name="Logout" component={LoginScreen} options={{ headerShown: false }} />
+        </Stack.Navigator>
       ) : (
         <Stack.Navigator>
           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Home" component={NavigattionTab} options={{ headerShown: false }}/>
+          <Stack.Screen name="Category" component={Category} options={{ headerShown: false }} />
+          <Stack.Screen name="Details" component={DetailBook} options={{ headerShown: false }} />
+          <Stack.Screen name="Favorite" component={FavoriteBooks} options={{ headerShown: false }} />
+          <Stack.Screen name="History" component={HistoryScreen} options={{ headerShown: false }}/>
+          <Stack.Screen name="Logout" component={LoginScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       )}
     </NavigationContainer>
