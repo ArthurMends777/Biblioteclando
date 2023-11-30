@@ -2,21 +2,22 @@ import React, { useState, useEffect } from "react";
 import { Header, Container, Text, DivBook, BtnReserv, BtnFavorites, GoBack } from '../../Components';
 import { Image } from 'react-native';
 import { useGetData } from "../../Services/hooks/useGetData";
-import { getFavoriteBooks, toggleFavorite } from "../../Services/hooks/favorite";
+import { isBookFavorite, toggleFavorite } from "../../Services/hooks/favorite";
 import { useAuth } from "../../Contexts/auth";
 
 
 export const DetailBook = ({ route }) => {
   const { item } = route.params;
-  const { getAutor, fazerEmprestimo } = useGetData();
+  const { getAutor, fazerEmprestimo, isBookBorrowed } = useGetData();
   const { infoUser } = useAuth();
   const [resultAutor, setResultAutor] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
-  const [emprest, setEmprest] = useState("Solicitar empréstimo");
+  const [isBorrowed, setIsBorrowed] = useState(false);
 
   useEffect(() => {
     callGetAutorResult();
     checkIfFavorito();
+    checkIfEmprestado();
   }, []);
 
   const callGetAutorResult = async () => {
@@ -29,36 +30,39 @@ export const DetailBook = ({ route }) => {
 
   const checkIfFavorito = async () => {
     if (infoUser) {
-      const favoritos = await getFavoriteBooks(infoUser.id_leitor);
-      const livroEncontrado = favoritos.find((book) => book.id === item.id);
-      setIsFavorite(!!livroEncontrado);
+      const livroEstaNoFavorito = await isBookFavorite(infoUser.id_leitor, item.id_livro);
+      setIsFavorite(livroEstaNoFavorito);
     }
   };
 
   const toggleFavorito = async () => {
     try {
-      if (isFavorite) {
-        await toggleFavorite(infoUser.id_leitor, item);
-      } else {
-        await toggleFavorite(infoUser.id_leitor, item);
-      }
-      // Se a operação for bem-sucedida, atualiza o estado isFavorite
+      await toggleFavorite(infoUser.id_leitor, item.id_livro);
+      // Após adicionar/remover dos favoritos, atualiza o estado isFavorite
       checkIfFavorito();
     } catch (error) {
       console.error('Erro ao adicionar/remover dos favoritos:', error);
     }
   };
   
+  const checkIfEmprestado = async () => {
+    if (infoUser) {
+      const livroEstaEmprestado = await isBookBorrowed(infoUser.id_leitor, item.id_livro);
+      setIsBorrowed(livroEstaEmprestado);
+    }
+  };
 
   const pegarLivroEmprestado = async () => {
     try {
-      const response = await fazerEmprestimo(infoUser.id_leitor, item.id_livro, 1);
-      setEmprest("Livro em leitura")
-      console.log(response)
-      if (response.success) {
-        console.log('Livro emprestado com sucesso!');
+      if (!isBorrowed) {
+        const response = await fazerEmprestimo(infoUser.id_leitor, item.id_livro, 1);
+        if (response.success) {
+          console.log('Livro emprestado com sucesso!');
+        } else {
+          console.error('response sem sucesso:', response.error);
+        }
       } else {
-        console.error('response sem sucesso:', response.error);
+        console.log('O livro já está emprestado.');
       }
     } catch (error) {
       console.error('Erro ao fazer empréstimo:', error);
@@ -82,7 +86,9 @@ export const DetailBook = ({ route }) => {
             </Text>
           </BtnFavorites>
           <BtnReserv onPress={pegarLivroEmprestado}>
-            <Text size={17} color="white"> {emprest} </Text>
+            <Text size={17} color="white">
+              {isBorrowed ? "Livro em leitura" : "Solicitar empréstimo"}
+            </Text>
           </BtnReserv>
         </DivBook>
       </DivBook>

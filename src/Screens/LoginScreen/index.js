@@ -29,7 +29,7 @@
         
                 if (!error401) {
                     console.log('Redirecionando para HomeA...');
-                    navigation.navigate('HomeA');
+                    navigation.navigate('Home');
                 } else {
                     setError('Email e/ou senha incorretos');
                 }

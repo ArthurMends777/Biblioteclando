@@ -30,23 +30,37 @@ export const RegisterScreen = () => {
     setConfirmSenha(text);
   };
 
+  const isValidCPF = (cpf) => {
+    // Validação de CPF utilizando uma expressão regular
+    const cpfRegex = /^[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}$/;
+    return cpfRegex.test(cpf);
+  };
+
   const handleSubmit = async () => {
     try {
       setLoading(true);
+
+      const { nome, Endereço, senha, telefone, email, CPF } = formData;
+
       // Verifica se algum campo está vazio
-      if (Object.values(formData).some(value => value.trim() === '')) {
+      if (!nome || !Endereço || !senha || !telefone || !email || !CPF) {
         setError('Preencha todos os campos.');
         return;
       }
 
       // Verifica se as senhas coincidem
-      if (formData.senha !== confirmSenha) {
+      if (senha !== confirmSenha) {
         setError('As senhas não coincidem.');
         return;
-      } else {
-        setError('')
       }
 
+      // Validação do CPF
+      if (!isValidCPF(CPF)) {
+        setError('CPF inválido. Insira no formato 111.111.111-11.');
+        return;
+      }
+
+      // Restante do código para realizar o registro...
       const response = await register(formData);
       navigation.navigate('Home');
       setRegistrationStatus(response);
@@ -116,7 +130,7 @@ export const RegisterScreen = () => {
           name="CPF"
           value={formData.CPF}
           placeholder="111.111.111-11"
-          onChangeText={(text) => handleChange("CPF", text)}
+          onChangeText={handleCPFFormat} 
         />
         
         <BtnGetRegister onPress={handleSubmit}>

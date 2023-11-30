@@ -1,4 +1,6 @@
 import { api } from "../api";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export const useGetData = () => {
     const getNomeGenero = async () => {
@@ -129,9 +131,71 @@ export const useGetData = () => {
         console.log('Erro ao buscar as informações do livro');
         return { success: false, error: 'Algo deu errado, tente novamente' };
       }
-    }
+    };
 
-      
+    const getLivrosAtrasados = async (idLeitor) => {
+      try {
+          const response = await api.get(`/api/livros-atrasados/${idLeitor}`);
+          if (response.status === 200) {
+              return response.data;
+          } else {
+              return [];
+          }
+      } catch (error) {
+          console.error('Erro ao buscar livros atrasados:', error);
+          return [];
+      }
+    };
+
+    const getFavoriteBooksDetails = async (id_leitor) => {
+      try {
+        const favoritos = await AsyncStorage.getItem(`favoriteBooks_${id_leitor}`);
+        if (favoritos) {
+          const favoritosArray = JSON.parse(favoritos);
+    
+          // Array para armazenar os detalhes completos dos livros favoritos
+          let favoriteBooksDetails = [];
+    
+          // Itera sobre os IDs dos livros favoritos para buscar seus detalhes na API
+          for (let livroId of favoritosArray) {
+
+            const response = await api.get(`/api/livros/${livroId}`);
+            if (response.status === 200) {
+              favoriteBooksDetails.push(response.data);
+            } else {
+              console.error('Erro ao buscar detalhes do livro:', response.status);
+            }
+          }
+    
+          return favoriteBooksDetails;
+        } else {
+          return [];
+        }
+      } catch (error) {
+        console.error('Erro ao buscar detalhes dos livros favoritos:', error);
+        return [];
+      }
+    };
+
+    const isBookBorrowed = async (idLeitor, idLivro) => {
+      try {
+        const response = await api.get(`/api/emprestimo/${idLeitor}/${idLivro}`);
+        
+        if (response.status === 200) {
+          // Se o livro estiver emprestado (status 200), retorna true
+          return true;
+        } else if (response.status === 404) {
+          // Se o livro não estiver emprestado (status 404), retorna false
+          return false;
+        } else {
+          console.error('Erro ao verificar se o livro está emprestado:', response.status);
+          return false;
+        }
+      } catch (error) {
+        console.error('Erro ao verificar se o livro está emprestado:', error);
+        return false;
+      }
+    };
       
     
     return {
@@ -143,5 +207,8 @@ export const useGetData = () => {
         getEmprestimosUsuario,
         register,
         bookByEmprest,
+        getLivrosAtrasados,
+        getFavoriteBooksDetails,
+        isBookBorrowed,
     };
 }

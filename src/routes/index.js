@@ -3,7 +3,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { NavigationContainer } from "@react-navigation/native"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { LoginScreen , ProfileScreen, SearchScreen, Category, DetailBook, FavoriteBooks, RegisterScreen, HistoryScreen, HomeScreen } from "../Screens/"
+import { TermsOfService, LoginScreen , ProfileScreen, SearchScreen, Category, DetailBook, FavoriteBooks, RegisterScreen, HistoryScreen, HomeScreen, LivrosHistoryScreen } from "../Screens/"
 import { theme } from "../styles/theme"
 import { Text } from "../Components"
 import { useAuth } from "../Contexts/auth"
@@ -42,7 +42,6 @@ const NavigattionTab = () => {
 
 const Routes = () => {
   const { infoUser } = useAuth();
-
   return (
     <NavigationContainer>
       {infoUser ? (
@@ -53,6 +52,7 @@ const Routes = () => {
           <Stack.Screen name="Favorite" component={FavoriteBooks} options={{ headerShown: false }} />
           <Stack.Screen name="History" component={HistoryScreen} options={{ headerShown: false }}/>
           <Stack.Screen name="Logout" component={LoginScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Livros" component={LivrosHistoryScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       ) : (
         <Stack.Navigator>
@@ -64,6 +64,7 @@ const Routes = () => {
           <Stack.Screen name="Favorite" component={FavoriteBooks} options={{ headerShown: false }} />
           <Stack.Screen name="History" component={HistoryScreen} options={{ headerShown: false }}/>
           <Stack.Screen name="Logout" component={LoginScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Livros" component={LivrosHistoryScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       )}
     </NavigationContainer>

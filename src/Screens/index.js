@@ -7,3 +7,5 @@ export * from './DetailBook';
 export * from './FavoriteScreen';
 export * from './RegisterScreen';
 export * from './HistoryScreen';
+export * from './BookScreen';
+export * from './TermsOfService';

@@ -1,6 +1,5 @@
 import React from "react"
 import { Container, Text, Header, DivProfile, BtnProfile, BtnLogout } from '../../Components'
-import { Image } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import { useAuth } from "../../Contexts/auth"
 
@@ -8,7 +7,6 @@ export const ProfileScreen = () => {
     const navigation = useNavigation();
     const { infoUser, logout } = useAuth();
 
-    //console.log(" Informações do user: " , infoUser)
     const handleLogout = () => {
         logout(); 
         navigation.navigate('Logout');
@@ -29,7 +27,7 @@ export const ProfileScreen = () => {
                     <Text size={21}> Livros em leitura</Text>
                 </BtnProfile>
 
-                <BtnProfile>
+                <BtnProfile onPress={() => navigation.navigate('Livros')}>
                     <Text size={21}> Histórico de leitura</Text>
                 </BtnProfile>
             </DivProfile>    

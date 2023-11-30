@@ -70,7 +70,7 @@ export const HistoryScreen = () => {
   
   return (
     <Container bg="background">
-      <Header> Livros em Leitura</Header>
+      <Header> Livros em leitura </Header>
       <GoBack />
       {loading ? (
         <Container bg="background" justify="center" align="center" h={600}>
