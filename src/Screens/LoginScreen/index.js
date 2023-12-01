@@ -28,7 +28,7 @@
                 console.log('Login bem-sucedido. Verificando error401:', error401);
         
                 if (!error401) {
-                    console.log('Redirecionando para HomeA...');
+                    console.log('Redirecionando para Home...');
                     navigation.navigate('Home');
                 } else {
                     setError('Email e/ou senha incorretos');

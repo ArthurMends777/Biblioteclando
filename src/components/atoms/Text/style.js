@@ -8,5 +8,7 @@ export const CustomText = styled.Text`
   margin-bottom: ${({ theme, mb }) => theme.metrics.px(mb || 0)}px;
   margin-left: ${({ theme, ml }) => theme.metrics.px(ml || 0)}px;
   margin-right: ${({ theme, mr }) => theme.metrics.px(mr || 0)}px;
+  text-align: justify;
+
 `
  

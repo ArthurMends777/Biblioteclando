@@ -48,14 +48,16 @@ export const SearchScreen = () => {
         <BtnSearch onPress={handleSearch}>
           <Text>Buscar</Text>
         </BtnSearch>
+      <Text size={20} mt={20}> {sla} </Text>
       </Container>
-      <Text ml={80} size={20}> {sla} </Text>
       {loading ? (
         <ActivityIndicator size="large" color="#007bff" />
       ) : (
         <>
           {noResults ? (
-            <Text ml={80} size={20}>Nenhum livro encontrado.</Text>
+            <Container h={60} mt={40} align="center" bg="background">
+              <Text size={20}>Nenhum livro encontrado.</Text>
+            </Container>
           ) : (
             <FlatList
               data={searchResults}

@@ -9,7 +9,7 @@ export const ProfileScreen = () => {
 
     const handleLogout = () => {
         logout(); 
-        navigation.navigate('Logout');
+        navigation.navigate('Login');
     };
     return(
         <Container bg="background" align="center">
